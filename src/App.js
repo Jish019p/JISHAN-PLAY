@@ -85,3 +85,21 @@ import './App.css';
 //             for (let i = 0; i <= 1000000000; i++) {}
 //             return num * 2;
 //         }
+
+import React, { useRef, useState , useEffect } from 'react';
+ 
+export default function App() { 
+    const [name , setName] = useState(''); 
+    const prevName = useRef('');
+
+    useEffect(() => {
+        prevName.current = name;
+    })
+    return (
+<>
+  <input value={name} onChange={e => setName(e.target.value)} />
+  <div>My name is {name} and it use to be {prevName.current}</div>   
+    
+</>
+
+        ) }
