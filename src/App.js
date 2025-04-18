@@ -150,39 +150,72 @@ import './App.css';
 
 // export default App;
 
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 
-// Custom Hook: useFetch
-function useFetch(url) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// // Custom Hook: useFetch
+// function useFetch(url) {
+//   const [data, setData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, [url]); // Re-fetch if url changes
+//   useEffect(() => {
+//     setLoading(true);
+//     fetch(url)
+//       .then((response) => response.json())
+//       .then((data) => {
+//         setData(data);
+//         setLoading(false);
+//       })
+//       .catch((err) => {
+//         setError(err.message);
+//         setLoading(false);
+//       });
+//   }, [url]); // Re-fetch if url changes
 
-  return { data, loading, error };
-}
+//   return { data, loading, error };
+// }
 
 // Using the custom Hook in a component
-function App() {
-  const { data, loading, error } = useFetch('https://jsonplaceholder.typicode.com/users/1');
+// function App() {
+//   const { data, loading, error } = useFetch('https://jsonplaceholder.typicode.com/users/1');
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p>Error: {error}</p>;
 
-  return <p>Welcome, {data.name}!</p>;
-}
+//   return <p>Welcome, {data.name}!</p>;
+// }
 
-export default App;
+// export default App;
+
+import React, { useState,useCallback} from 'react';
+import List from './List.js';
+
+export default function App() {
+  const [number, setNumber] = useState(0);
+  const [dark, setDark] = useState(false);
+
+  const getItems = useCallback(() => {
+    return [number + 1, number + 2, number + 3];
+  }, [number]);
+
+  const themeStyle = {
+    backgroundColor: dark ? 'black' : 'white',
+    color: dark ? 'white' : 'black'
+  };
+
+  return (
+    <>
+      <input
+        type="number"
+        value={number}
+        onChange={e => setNumber(parseInt(e.target.value))}
+      />
+      <button onClick={() => setDark(prevDark => !prevDark)}>
+        Change Theme
+      </button>
+      <div style={themeStyle}>
+        <List getItems={getItems} />
+      </div>
+    </>
+  );
+} 
