@@ -123,29 +123,66 @@ import './App.css';
 
 // export default App;
 
-import React, { useReducer } from 'react';
+// import React, { useReducer } from 'react';
 
-function reducer(state, action) {
-  switch (action.type) {
-    case 'increment':
-      return { count: state.count + 1 };
-    case 'decrement':
-      return { count: state.count - 1 };
-    default:
-      return state;
-  }
+// function reducer(state, action) {
+//   switch (action.type) {
+//     case 'increment':
+//       return { count: state.count + 1 };
+//     case 'decrement':
+//       return { count: state.count - 1 };
+//     default:
+//       return state;
+//   }
+// }
+
+// function App() {
+//   const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+//   return (
+//     <div>
+//       <p>Count: {state.count}</p>
+//       <button onClick={() => dispatch({ type: 'increment' })}>Increment</button>
+//       <button onClick={() => dispatch({ type: 'decrement' })}>Decrement</button>
+//     </div>
+//   );
+// }
+
+// export default App;
+
+import { useState, useEffect } from 'react';
+
+// Custom Hook: useFetch
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [url]); // Re-fetch if url changes
+
+  return { data, loading, error };
 }
 
+// Using the custom Hook in a component
 function App() {
-  const [state, dispatch] = useReducer(reducer, { count: 0 });
+  const { data, loading, error } = useFetch('https://jsonplaceholder.typicode.com/users/1');
 
-  return (
-    <div>
-      <p>Count: {state.count}</p>
-      <button onClick={() => dispatch({ type: 'increment' })}>Increment</button>
-      <button onClick={() => dispatch({ type: 'decrement' })}>Decrement</button>
-    </div>
-  );
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return <p>Welcome, {data.name}!</p>;
 }
 
 export default App;
