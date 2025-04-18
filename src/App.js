@@ -104,20 +104,47 @@ import './App.css';
 
 //         ) }
 
-import React, { useContext, createContext } from 'react';
+// import React, { useContext, createContext } from 'react';
 
-const ThemeContext = createContext('light');
+// const ThemeContext = createContext('light');
 
-function ThemeDisplay() {
-  const theme = useContext(ThemeContext);
-  return <p>Current theme: {theme}</p>;
+// function ThemeDisplay() {
+//   const theme = useContext(ThemeContext);
+//   return <p>Current theme: {theme}</p>;
+// }
+
+// function App() {
+//   return (
+//     <ThemeContext.Provider value="dark">
+//       <ThemeDisplay />
+//     </ThemeContext.Provider>
+//   );
+// }
+
+// export default App;
+
+import React, { useReducer } from 'react';
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
 }
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
+
   return (
-    <ThemeContext.Provider value="dark">
-      <ThemeDisplay />
-    </ThemeContext.Provider>
+    <div>
+      <p>Count: {state.count}</p>
+      <button onClick={() => dispatch({ type: 'increment' })}>Increment</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>Decrement</button>
+    </div>
   );
 }
 
