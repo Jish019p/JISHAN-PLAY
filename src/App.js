@@ -86,20 +86,39 @@ import './App.css';
 //             return num * 2;
 //         }
 
-import React, { useRef, useState , useEffect } from 'react';
+// import React, { useRef, useState , useEffect } from 'react';
  
-export default function App() { 
-    const [name , setName] = useState(''); 
-    const prevName = useRef('');
+// export default function App() { 
+//     const [name , setName] = useState(''); 
+//     const prevName = useRef('');
 
-    useEffect(() => {
-        prevName.current = name;
-    })
-    return (
-<>
-  <input value={name} onChange={e => setName(e.target.value)} />
-  <div>My name is {name} and it use to be {prevName.current}</div>   
+//     useEffect(() => {
+//         prevName.current = name;
+//     })
+//     return (
+// <>
+//   <input value={name} onChange={e => setName(e.target.value)} />
+//   <div>My name is {name} and it use to be {prevName.current}</div>   
     
-</>
+// </>
 
-        ) }
+//         ) }
+
+import React, { useContext, createContext } from 'react';
+
+const ThemeContext = createContext('light');
+
+function ThemeDisplay() {
+  const theme = useContext(ThemeContext);
+  return <p>Current theme: {theme}</p>;
+}
+
+function App() {
+  return (
+    <ThemeContext.Provider value="dark">
+      <ThemeDisplay />
+    </ThemeContext.Provider>
+  );
+}
+
+export default App;
